@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Quiz</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+    <div id="time-remaining">Time: </div>
+    <div class="container">
+        <div id="start-page">
+            <h1>Test Your Spiderman Knowledge</h1>
+            <p>To answer the following questions about spiderman, select the answer choice.</p>
+            <button type="button" class="btn btn-outline-primary" id="start-button">Start Quiz</button>
+        </div> 
+        
+        <div id="question-pages">
+            <!-- Question titles will go here -->
+            <h2 id="question-title"></h2>
+        
+            <!-- Button answers will go here -->
+            <ul id="button-answers"></ul>
+        </div>    
+    </div>
+    <script src="./questions.js"></script>
+    <script src="./script.js"></script>
+
+</body>
+</html>
