@@ -23,7 +23,15 @@ var finalList = {
     scoresList: [],
 }
 
+init();
+
 // Functions
+function init() {
+    var storedList = JSON.parse(localStorage.getItem("finalList"));
+    if (storedList !== null) {
+        finalList = storedList;
+    }
+}
 
 function setTime() {
     var timerInterval = setInterval(function() {
@@ -110,7 +118,8 @@ function renderFinalPage() {
     
     finalPageSubmit.addEventListener("click", function(event) {
         event.preventDefault();
-        var initialsText = document.querySelector("#input-field").value;
+
+        var initialsText = document.getElementById("input-field").value
         
         finalList.initialsList.push(initialsText);
         finalList.scoresList.push(score);
@@ -121,14 +130,11 @@ function renderFinalPage() {
 }
 
 function storeScores() {
-    localStorage.setItem("highScoresList",JSON.stringify(finalList));    
+    localStorage.setItem("finalList",JSON.stringify(finalList));    
 }
 
 function viewHighScore() {
     spidermanImage.innerHTML = "";
-    var storedList = JSON.parse(localStorage.getItem("highScoresList"));
-    
-    finalList = storedList;
     
     for (var i=0; i<finalList.initialsList.length; i++) {
         var initial = finalList.initialsList[i];
