@@ -9,7 +9,17 @@
     <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-    <div id="time-remaining">Time: </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div id="time-remaining">Time: </div>
+        </div>
+        <div class="col-sm-6">
+            <div id="view-score">
+                <a>View Highscore</a>
+            </div>
+        </div>
+    </div>
+    
     <div class="container">
         <div class="row">
             <div class="col-sm-12 d-flex justify-content-center">
@@ -35,6 +45,11 @@
                 <div id="final-page"></div>    
             </div>
         </div>                
+        <div class="row">
+            <div class="col-sm-12 d-flex justify-content-center">
+                <div id="response"></div>
+            </div>
+        </div>
     </div>
     <script src="./questions.js"></script>
     <script src="./script.js"></script>

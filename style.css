@@ -13,3 +13,21 @@ button {
     text-align: center;
     padding-left: 0; padding-right: 0; margin-left: 0; margin-right: 0
 }
+
+h1 h2 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 2rem;
+}
+
+p {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+}
+
+#response {
+    border-top-style: solid;
+    border-top-color: gray;
+    border-top-width: thin;
+    padding: 15px;
+    color: gray;
+}
