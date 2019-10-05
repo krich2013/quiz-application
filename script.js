@@ -8,19 +8,20 @@ var buttonAnswers = document.getElementById("button-answers");
 var finalPage = document.getElementById("final-page");
 var timeRemaining = document.getElementById("time-remaining");
 
-var secondsLeft = 0;
 var questionsIndex = 0;
+var questionsRemaining = questions.length - parseInt(questionsIndex);
+var timerInterval = 0;
+var secondsLeft = questions.length * 15
 var index = "";
 var score = 0;
 
-// Setting up functions
+// Functions
 function setTime() {
-    var secondsLeft = questions.length * 15;
     var timerInterval = setInterval(function() {
-        secondsLeft--;
         timeRemaining.textContent = "Time: " + secondsLeft;
-
-        if(secondsLeft === 0) {
+        secondsLeft--;
+        
+        if(secondsLeft === 0 || questionsRemaining === 0 || questionsRemaining < 0) {
             clearInterval(timerInterval);
         }
     }, 1000);
@@ -30,60 +31,76 @@ function setTime() {
 
 function startQuiz() {
     startPage.parentNode.removeChild(startPage);
-    addQuestion();
+    checkQuestion();
+}
+
+function checkQuestion() {
+    if (questionsRemaining === 0 || questionsRemaining < 0) {
+        timeRemaining.textContent = "Time: " + 0;
+        endQuiz();
+    }
+    
+    else {
+        addQuestion();
+    }
 }
 
 function addQuestion() {
-    if (questionsIndex > (questions.length - 1)) {
-        timeRemaining.textContent = "Time: " + 0;
-        questionsIndex = questionsIndex - 1;
-        endQuiz();
-    }
-
-    else {
-        questionTitle.innerHTML = questions[questionsIndex].title;
-            for (var i = 0; i < questions[questionsIndex].choices.length; i++) {
-                var li = document.createElement("li")
-                var choiceButton = document.createElement("button");
-                index = i
-                
-                choiceButton.setAttribute("id",index);
-                choiceButton.innerHTML = questions[questionsIndex].choices[i];
-                buttonAnswers.appendChild(li);
-                li.appendChild(choiceButton);
-            }
-            buttonAnswers.addEventListener("click", function() {
-                var userChoice = event.target;
-                if (userChoice.matches("button")) {
-                    console.log(userChoice);
-                    userChoice = event.target.id;
-                    console.log(userChoice);
-                }
-                
-                    if (questions[questionsIndex].choices[userChoice] === questions[questionsIndex].answer) {
-                        console.log("yes");
-                        score = score + 1;
-                        buttonAnswers.innerHTML = "";
-                        questionsIndex = questionsIndex + 1;
-                        addQuestion();
-                    }
-                    
-                    else {
-                        console.log("no");
-                        secondsLeft = secondsLeft - 15;
-                        buttonAnswers.innerHTML = "";
-                        questionsIndex = questionsIndex + 1;
-                        addQuestion();
-                    }
-            })
+    questionTitle.innerHTML = questions[questionsIndex].title;
+    for (var i = 0; i < questions[questionsIndex].choices.length; i++) {
+        var li = document.createElement("li")
+        var choiceButton = document.createElement("button");
+        index = i
+        
+        choiceButton.setAttribute("id",index);
+        choiceButton.innerHTML = questions[questionsIndex].choices[i];
+        buttonAnswers.appendChild(li);
+        li.appendChild(choiceButton);
     }
 }
 
 function endQuiz() {
     questionPage.parentNode.removeChild(questionPage);
+    stopTimer();
+    renderFinalPage();
 }
-    
-    // Event Listeners
-    startButton.addEventListener("click", setTime);
-    
-    
+
+function stopTimer() {
+    secondsLeft = 0;
+    clearInterval(timerInterval);
+}  
+
+function renderFinalPage() {
+
+}
+
+// Event Listeners
+startButton.addEventListener("click", setTime);
+buttonAnswers.addEventListener("click", function() {
+        var userChoice = event.target;
+        if (userChoice.matches("button")) {
+            console.log(userChoice);
+            userChoice = event.target.id;
+            console.log(userChoice);
+        }
+        
+        if (questions[questionsIndex].choices[userChoice] === questions[questionsIndex].answer) {
+            console.log("yes");
+            console.log(secondsLeft);
+            score = score + 1;
+            buttonAnswers.innerHTML = "";
+            questionsIndex++;
+            questionsRemaining = questionsRemaining - questionsIndex;
+            checkQuestion();
+        }
+        
+        else {
+            console.log("no");
+            console.log(secondsLeft);
+            buttonAnswers.innerHTML = "";
+            secondsLeft = secondsLeft - 15;
+            questionsIndex++;
+            questionsRemaining = questionsRemaining - questionsIndex;
+            checkQuestion();
+        }
+})
