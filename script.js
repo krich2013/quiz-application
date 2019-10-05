@@ -10,6 +10,7 @@ var timeRemaining = document.getElementById("time-remaining");
 var responseLine = document.getElementById("response");
 var highScore = document.getElementById("view-score");
 var spidermanImage = document.getElementById("spiderman-image");
+var scoresList = document.getElementById("high-scores");
 
 var questionsIndex = 0;
 var questionsRemaining = questions.length - parseInt(questionsIndex);
@@ -23,13 +24,6 @@ var finalList = {
 }
 
 // Functions
-function startOverPage() {
-    spidermanImage.appendChild(startPage);
-    startPage.appendChild(questionPage);
-    questionPage.appendChild(finalPage);
-    finalPage.appendChild(responseLine);
-    setTime();
-}
 
 function setTime() {
     var timerInterval = setInterval(function() {
@@ -114,37 +108,29 @@ function renderFinalPage() {
     finalPageLabel.innerHTML = "Enter Initials";
     finalPageSubmit.innerHTML = "Submit";
     
-    function storeScores() {
-        localStorage.setItem("Initials",JSON.stringify(finalList.initialsList));    
-        localStorage.setItem("Score", JSON.stringify(finalList.scoresList));
-    }
-        finalPageSubmit.addEventListener("click", function(event) {
-            event.preventDefault();
-    
-            var initialsText = finalPageInput.value;
-    
-            finalList.initialsList.push(initialsText);
-            finalList.scoresList.push(score);
-            finalPageInput.value = "";
-    
-            storeScores();
-            viewHighScore();
+    finalPageSubmit.addEventListener("click", function(event) {
+        event.preventDefault();
+        var initialsText = document.querySelector("#input-field").value;
+        
+        finalList.initialsList.push(initialsText);
+        finalList.scoresList.push(score);
+        
+        storeScores();
+        viewHighScore();
     })
 }
 
-function viewHighScore() {
-    startPage.innerHTML = "";
-    spidermanImage.innerHTML = "";
-    questionPage.innerHTML = "";
-    finalPage.innerHTML = "";
+function storeScores() {
+    localStorage.setItem("highScoresList",JSON.stringify(finalList));    
+}
 
-    var storedInitials = JSON.parse(localStorage.getItem("finalList.initialsList"));
-    var storedScores = JSON.parse(localStorage.getItem("finalList.scoresList"));
+function viewHighScore() {
+    spidermanImage.innerHTML = "";
+    var storedList = JSON.parse(localStorage.getItem("highScoresList"));
     
-    finalList.initialsList = storedInitials;
-    finalList.scoresList = storedScores;
+    finalList = storedList;
     
-    for (var i=0; i<finalList.length; i++) {
+    for (var i=0; i<finalList.initialsList.length; i++) {
         var initial = finalList.initialsList[i];
         var highScores = finalList.scoresList[i];
         var li = document.createElement("li");
@@ -152,23 +138,6 @@ function viewHighScore() {
         li.setAttribute("scores-list",i);
         spidermanImage.appendChild(li);
     }
-    
-    var startOverButton = document.createElement("button");
-    var clearButton = document.createElement("button");
-
-    startOverButton.textContent = "Start Over";
-    clearButton.textContent = "Clear Scores";
-    
-    spidermanImage.appendChild(startOverButton);
-    spidermanImage.appendChild(clearButton);
-    
-    startOverButton.addEventListener("click",startOverPage);
-    clearButton.addEventListener("click", function() {
-        finalList = {
-            initialsList: [],
-            scoresList: [],
-        }
-    })
 }
 
 // Event Listeners
