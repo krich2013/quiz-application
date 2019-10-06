@@ -11,8 +11,9 @@ var responseLine = document.getElementById("response");
 var highScore = document.getElementById("view-score");
 var spidermanImage = document.getElementById("spiderman-image");
 var highscoreView = document.getElementById("highscore-view");
-var clearButton = document.getElementById("clear-score");
+var clearButton = document.getElementById("clear-scores");
 var gobackButton = document.getElementById("go-back");
+var highscoreList = document.getElementById("highscore-list");
 
 var questionsIndex = 0;
 var questionsRemaining = questions.length;
@@ -39,10 +40,10 @@ function init() {
     startPage.hidden = false;
     spidermanImage.hidden = false;
     questionPage.hidden = true;
+    finalPage.hidden = true;
 }
 
 function setTime() {
-    questionPage.hidden = false;
     startPage.hidden = true;
 
     var timerInterval = setInterval(function() {
@@ -58,7 +59,10 @@ function setTime() {
 }
 
 function startQuiz() {
-    startPage.hidden = true;
+    questionPage.hidden = false;
+    questionsRemaining = questions.length;
+    secondsLeft = questions.length * 15;
+    questionsIndex = 0;
     checkQuestion();
 }
 
@@ -99,33 +103,13 @@ function stopTimer() {
 
 function renderFinalPage() {
     questionPage.hidden = true;
-    var finalPageScore = document.createElement("div");
-    var finalPageHeader = document.createElement("div");
-    var finalPageForm = document.createElement("form");
-    var finalPageLabel = document.createElement("label");
-    var finalPageInput = document.createElement("input");
-    var finalPageSubmit = document.createElement("button");
-    
-    finalPageScore.setAttribute("id","final-score");
-    finalPageHeader.setAttribute("id","final-text");
-    finalPageForm.setAttribute("id","input-form");
-    finalPageLabel.setAttribute("for", "Enter Initials");
-    finalPageInput.setAttribute("id", "input-field");
-    finalPageInput.setAttribute("type", "text");
-    
-    finalPage.appendChild(finalPageScore);
-    finalPage.appendChild(finalPageHeader);
-    finalPage.appendChild(finalPageForm);
-    finalPageForm.appendChild(finalPageLabel);
-    finalPageForm.appendChild(finalPageInput);
-    finalPageForm.appendChild(finalPageSubmit);
-    
+    finalPage.hidden = false;
+
+    var finalPageScore = document.getElementById("final-score");
+    var finalPageSubmit = document.getElementById("score-submit");    
     
     responseLine.innerHTML = "";
     finalPageScore.innerHTML = "Score: " + score + " out of 5";
-    finalPageHeader.innerHTML = "Congratulations! You have completed the Spider-Man test! You can save your score below.";
-    finalPageLabel.innerHTML = "Enter Initials";
-    finalPageSubmit.innerHTML = "Submit";
     
     finalPageSubmit.addEventListener("click", function(event) {
         event.preventDefault();
@@ -147,6 +131,9 @@ function storeScores() {
 function viewHighScore() {
     spidermanImage.hidden = true;
     finalPage.hidden = true;
+
+    console.log(finalList.scoresList.length);
+    highscoreList.innerHTML = "View Your High Scores";
     
     for (var i=0; i<finalList.initialsList.length; i++) {
         var initial = finalList.initialsList[i];
@@ -154,9 +141,21 @@ function viewHighScore() {
         var li = document.createElement("li");
         li.textContent = initial + ": " + highScores;
         li.setAttribute("scores-list",i);
-        highscoreView.appendChild(li);
+        highscoreList.appendChild(li);
     }
+
     highscoreView.hidden = false;
+
+    clearButton.addEventListener("click", function(event) {
+        event.preventDefault();
+        highscoreList.innerHTML = "";
+        finalList = {
+            initialsList: [],
+            scoresList: [],
+        }       
+        // storeScores();
+    })
+
 }
 
 // Event Listeners

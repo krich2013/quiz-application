@@ -23,7 +23,10 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 d-flex justify-content-center">
-                <div id="highscore-view">View Your High Scores
+                <div id="highscore-view">
+                    <div id="highscore-list">
+                        <h3>View Your High Scores</h3>
+                    </div>
                     <button id="go-back">Go Back</button>
                     <button id="clear-scores">Clear Scores</button>
                 </div>
@@ -46,7 +49,15 @@
                     <!-- Button answers will go here -->
                     <ul id="button-answers"></ul>
                 </div>
-                <div id="final-page"></div>    
+                <div id="final-page">
+                    <div id="final-score"></div>
+                    <div id="final-text">Congratulations! You have completed the Spider-Man test! You can save your score below</div>
+                    <form id="input-form">
+                        Enter Initials:
+                        <input id="input-field" type="text"></input>
+                    </form>
+                    <button id="score-submit">Submit</button>
+                </div>    
             </div>
         </div>                
         <div class="row">
